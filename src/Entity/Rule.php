@@ -36,12 +36,27 @@ class Rule
      */
     private $discount_step;
 
-    public function getId(): ?int
+    /**
+     * Rule constructor.
+     * @param $name
+     * @param $action_name
+     * @param $discount_amount
+     * @param $discount_step
+     */
+    public function __construct(string $name, string $action_name, float $discount_amount = null, int $discount_step = null)
+    {
+        $this->name = $name;
+        $this->action_name = $action_name;
+        $this->discount_amount = $discount_amount;
+        $this->discount_step = $discount_step;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

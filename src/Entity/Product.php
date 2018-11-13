@@ -33,17 +33,19 @@ class Product
      */
     private $rules;
 
-    public function __construct()
+    public function __construct(string $sku, float $price)
     {
+        $this->sku = $sku;
+        $this->price = $price;
         $this->rules = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getSku(): ?string
+    public function getSku(): string
     {
         return $this->sku;
     }
@@ -55,7 +57,7 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
