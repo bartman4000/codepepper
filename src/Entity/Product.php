@@ -42,7 +42,6 @@ class Product
         }, $rules);
 
         $this->rules = new ArrayCollection($rules);
-
     }
 
     public function getId(): ?int

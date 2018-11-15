@@ -44,5 +44,4 @@ class RuleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

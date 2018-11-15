@@ -5,7 +5,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\CheckoutService;
@@ -26,7 +25,7 @@ class CheckoutController extends AbstractController
         $productRepo = $em->getRepository(Product::class);
 
         $skus = json_decode($request->getContent(), true);
-        if(!is_array($skus)) {
+        if (!is_array($skus)) {
             return $this->json(['error' => 'Bad data format: '.json_last_error_msg()], 400);
         }
 

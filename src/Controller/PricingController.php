@@ -5,7 +5,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Product;
 use App\Entity\Rule;
 use App\Repository\ProductRepository;
@@ -35,7 +34,7 @@ class PricingController extends AbstractController
         /** @var RuleRepository $ruleRepo */
         $ruleRepo = $em->getRepository(Rule::class);
 
-        $serializer = new Serializer([new ObjectNormalizer(), new ArrayDenormalizer()],[new JsonEncoder()]);
+        $serializer = new Serializer([new ObjectNormalizer(), new ArrayDenormalizer()], [new JsonEncoder()]);
 
         try {
             /** @var Product $product */
@@ -44,7 +43,7 @@ class PricingController extends AbstractController
             return $this->json(['error' => 'Bad data format: '.$e->getMessage()], 400);
         }
 
-        if(!$product instanceof Product) {
+        if (!$product instanceof Product) {
             return $this->json(['error' => 'Bad data format for Product entity'], 400);
         }
 
@@ -53,8 +52,7 @@ class PricingController extends AbstractController
         $rules = $product->getRules();
 
         $oldProduct = $productRepo->findOneBySku($sku);
-        if($oldProduct) {
-
+        if ($oldProduct) {
             $oldRules = $ruleRepo->findAllForProductId($oldProduct->getId());
             foreach ($oldRules as $oldRule) {
                 $em->remove($oldRule);

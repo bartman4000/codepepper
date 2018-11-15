@@ -5,7 +5,6 @@
 
 namespace App\Discount;
 
-
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Entity\Rule;

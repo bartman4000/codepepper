@@ -5,7 +5,6 @@
 
 namespace App\Entity;
 
-
 class Price
 {
     /**

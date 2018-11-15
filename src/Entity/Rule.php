@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Rule
 {
-
     const DISCOUNT_CLASS_PATH = 'App\\Discount\\';
 
     /**
