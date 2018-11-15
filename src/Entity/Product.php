@@ -29,23 +29,28 @@ class Product
     private $price;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Rule")
+     * @ORM\OneToMany(targetEntity="App\Entity\Rule", mappedBy="product", orphanRemoval=true, cascade={"all"})
      */
     private $rules;
 
-    public function __construct(string $sku, float $price)
+    public function __construct(string $sku, float $price, array $rules = [])
     {
         $this->sku = $sku;
         $this->price = $price;
-        $this->rules = new ArrayCollection();
+        $rules = array_map(function ($rule) {
+            return Rule::fromArray($rule);
+        }, $rules);
+
+        $this->rules = new ArrayCollection($rules);
+
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSku(): string
+    public function getSku(): ?string
     {
         return $this->sku;
     }
@@ -81,6 +86,7 @@ class Product
     {
         if (!$this->rules->contains($rule)) {
             $this->rules[] = $rule;
+            $rule->setProduct($this);
         }
 
         return $this;
@@ -90,8 +96,20 @@ class Product
     {
         if ($this->rules->contains($rule)) {
             $this->rules->removeElement($rule);
+            // set the owning side to null (unless already changed)
+            if ($rule->getProduct() === $this) {
+                $rule->setProduct(null);
+            }
         }
 
         return $this;
+    }
+
+    /**
+     * @param mixed $rules
+     */
+    public function setRules($rules): void
+    {
+        $this->rules = $rules;
     }
 }

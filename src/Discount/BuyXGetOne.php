@@ -3,15 +3,14 @@
  * @author Bartłomiej Olewiński <bartlomiej.olewinski@gmail.com>
  */
 
-namespace App\Entity\Discount;
+namespace App\Discount;
 
 
-use App\Entity\DiscountInterface;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Entity\Rule;
 
-class BuyXgetYthDiscounted implements DiscountInterface
+class BuyXGetOne implements DiscountInterface
 {
 
     public function calculate(Rule $rule, Product $product, int $quantity): Price
@@ -23,18 +22,14 @@ class BuyXgetYthDiscounted implements DiscountInterface
         }
 
         $x = $rule->getDiscountStep();
-        $discountPercent = $rule->getDiscountAmount();
 
-        if(empty($x) || empty($discountPercent)) {
+        if(empty($x)) {
             return new Price($product->getPrice());
         }
 
-        $mod = ($quantity % $x);
+        $mod = ($quantity % ($x+1));
         if($mod == 0) {
-
-            $amountToSubtract = ($discountPercent/100) * $product->getPrice();
-            $newPrice = floor($product->getPrice() - $amountToSubtract);
-            return new Price($newPrice);
+            return new Price(0);
         }
 
         return $price;

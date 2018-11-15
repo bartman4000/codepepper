@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Discount\DiscountInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Rule
 {
+
+    const DISCOUNT_CLASS_PATH = 'App\\Discount\\';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -22,19 +26,25 @@ class Rule
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     private $action_name;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $discount_amount;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $discount_step;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="rules")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
+     */
+    private $product;
 
     /**
      * Rule constructor.
@@ -43,7 +53,7 @@ class Rule
      * @param $discount_amount
      * @param $discount_step
      */
-    public function __construct(string $name, string $action_name, float $discount_amount = null, int $discount_step = null)
+    public function __construct(string $name, string $action_name, ?int $discount_amount=null, ?int $discount_step=null)
     {
         $this->name = $name;
         $this->action_name = $action_name;
@@ -51,12 +61,12 @@ class Rule
         $this->discount_step = $discount_step;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -80,12 +90,12 @@ class Rule
         return $this;
     }
 
-    public function getDiscountAmount(): ?float
+    public function getDiscountAmount(): ?int
     {
         return $this->discount_amount;
     }
 
-    public function setDiscountAmount(?float $discount_amount): self
+    public function setDiscountAmount(?int $discount_amount): self
     {
         $this->discount_amount = $discount_amount;
 
@@ -102,5 +112,37 @@ class Rule
         $this->discount_step = $discount_step;
 
         return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return DiscountInterface
+     */
+    public function getDiscount(): DiscountInterface
+    {
+        $name = $this->getActionName();
+        $cname = self::DISCOUNT_CLASS_PATH.$name;
+        return new $cname;
+    }
+
+    public static function fromArray(array $array): Rule
+    {
+        return new Rule(
+            $array['name'],
+            $array['action_name'],
+            $array['discount_amount'],
+            $array['discount_step']
+        );
     }
 }

@@ -6,7 +6,7 @@
 namespace App\Tests\Entity\Discount;
 
 
-use App\Entity\Discount\BuyXgetYthDiscounted;
+use App\Discount\BuyXgetYthDiscounted;
 use App\Entity\Product;
 use App\Entity\Rule;
 use PHPUnit\Framework\TestCase;
