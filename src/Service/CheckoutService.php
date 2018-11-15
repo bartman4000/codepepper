@@ -16,16 +16,15 @@ class CheckoutService
     public function calculate(array $products): float
     {
         $total = 0;
+        $quantity = [];
         foreach ($products as $product) {
             if(!$product instanceof Product) {
                 continue;
             }
 
-            $quantity = [];
-
             $sku = $product->getSku();
             if(isset($quantity[$sku])) {
-                $quantity[$sku] ++;
+                $quantity[$sku]++;
             } else {
                 $quantity[$sku] = 1;
             }

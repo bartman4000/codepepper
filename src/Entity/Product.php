@@ -38,7 +38,7 @@ class Product
         $this->sku = $sku;
         $this->price = $price;
         $rules = array_map(function ($rule) {
-            return Rule::fromArray($rule);
+            return is_array($rule) ? Rule::fromArray($rule) : $rule;
         }, $rules);
 
         $this->rules = new ArrayCollection($rules);

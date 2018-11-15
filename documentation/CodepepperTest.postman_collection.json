@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "bafdf3c4-378a-451a-a0ef-3a26b3439d90",
+		"name": "CodepepperTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://codepepper.local/checkout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[ \"TSHIRT0012\", \"TSHIRT0012\", \"CARTOYR0200\" ]"
+				},
+				"url": {
+					"raw": "http://codepepper.local/checkout",
+					"protocol": "http",
+					"host": [
+						"codepepper",
+						"local"
+					],
+					"path": [
+						"checkout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://codepepper.local/pricing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sku\": \"TSHIRT0012\", \n\t\"price\": 100,\n\t\"rules\": [\n\t\t{\n\t\t\t\"name\": \"Buy 3 Get 4th For Free\",\n\t\t\t\"action_name\": \"BuyXGetOne\",\n\t\t\t\"discount_amount\": null,\n\t\t\t\"discount_step\": 3\n\t\t}\n\t]\n}\n"
+				},
+				"url": {
+					"raw": "http://codepepper.local/product",
+					"protocol": "http",
+					"host": [
+						"codepepper",
+						"local"
+					],
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

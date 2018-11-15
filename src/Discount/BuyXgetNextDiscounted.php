@@ -10,7 +10,7 @@ use App\Entity\Price;
 use App\Entity\Product;
 use App\Entity\Rule;
 
-class BuyXgetYthDiscounted implements DiscountInterface
+class BuyXgetNextDiscounted implements DiscountInterface
 {
 
     public function calculate(Rule $rule, Product $product, int $quantity): Price
@@ -28,7 +28,7 @@ class BuyXgetYthDiscounted implements DiscountInterface
             return new Price($product->getPrice());
         }
 
-        $mod = ($quantity % $x);
+        $mod = ($quantity % ($x+1));
         if($mod == 0) {
 
             $amountToSubtract = ($discountPercent/100) * $product->getPrice();

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\Serializer;
 class PricingController extends AbstractController
 {
     /**
-     * @Route("/pricing", methods={"POST"})
+     * @Route("/product", methods={"POST"})
      */
     public function index(Request $request, ObjectManager $em): JsonResponse
     {
@@ -36,8 +37,16 @@ class PricingController extends AbstractController
 
         $serializer = new Serializer([new ObjectNormalizer(), new ArrayDenormalizer()],[new JsonEncoder()]);
 
-        /** @var Product $product */
-        $product = $serializer->deserialize($request->getContent(), Product::class, 'json', []);
+        try {
+            /** @var Product $product */
+            $product = $serializer->deserialize($request->getContent(), Product::class, 'json', []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json(['error' => 'Bad data format: '.$e->getMessage()], 400);
+        }
+
+        if(!$product instanceof Product) {
+            return $this->json(['error' => 'Bad data format for Product entity'], 400);
+        }
 
         $sku = $product->getSku();
         $price = $product->getPrice();
