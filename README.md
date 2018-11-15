@@ -1,4 +1,4 @@
-# Checkout - PHP Developer coding test
+# Checkout for code & pepper
 
 
 ## Build
