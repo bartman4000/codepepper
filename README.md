@@ -12,7 +12,7 @@ composer install
 ## Test
 
 ```
-php bin/phpunit
+php ./vendor/bin/phpunit
 ```
 
 ## Run
